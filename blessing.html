@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>立冬温馨提示</title>
+<style>
+  body {
+    margin: 0;
+    overflow: hidden;
+    background: linear-gradient(to bottom, #fffaf8, #f8f4ff);
+    font-family: "微软雅黑", sans-serif;
+  }
+
+  /* 小提示窗口样式 */
+  .tip {
+    position: absolute;
+    padding: 10px 20px;
+    border-radius: 15px;
+    font-size: 18px;
+    color: #333;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    transition: opacity 0.3s ease;
+  }
+
+  /* 最终祝福窗口 */
+  .final {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: lightpink;
+    padding: 20px 40px;
+    border-radius: 20px;
+    font-size: 22px;
+    font-weight: bold;
+    display: none;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  }
+
+  /* 雪花样式 */
+  .snowflake {
+    position: fixed;
+    top: -10px;
+    color: white;
+    font-size: 12px;
+    user-select: none;
+    pointer-events: none;
+    animation: fall linear infinite;
+    text-shadow: 0 0 5px #fff;
+  }
+
+  /* 雪花下落动画 */
+  @keyframes fall {
+    0% {
+      transform: translateY(0) rotate(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100vh) rotate(360deg);
+      opacity: 0.7;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="final">记得吃饺子，立冬快乐呀！</div>
+
+<script>
+/* ============ 温馨提示逻辑 ============ */
+const tips = [
+  '多喝水哦~', '保持微笑呀', '每天都要元气满满',
+  '记得吃水果', '保持好心情', '好好爱自己', '加油鸭',
+  '梦想成真', '期待下一次见面', '顺顺利利', '早点休息',
+  '愿所有烦恼都消失', '别熬夜', '今天过得开心嘛', '天冷了，多穿衣服'
+];
+
+const bgColors = [
+  'lightpink', 'skyblue', 'lightgreen', 'lavender',
+  'lightyellow', 'plum', 'coral', 'bisque', 'aquamarine',
+  'mistyrose', 'honeydew', 'lavenderblush', 'oldlace'
+];
+
+const allTips = [];
+
+function createTip() {
+  const tip = document.createElement('div');
+  tip.className = 'tip';
+  tip.textContent = tips[Math.floor(Math.random() * tips.length)];
+  tip.style.backgroundColor = bgColors[Math.floor(Math.random() * bgColors.length)];
+  tip.style.left = Math.random() * (window.innerWidth - 200) + 'px';
+  tip.style.top = Math.random() * (window.innerHeight - 80) + 'px';
+  document.body.appendChild(tip);
+  allTips.push(tip);
+}
+
+// 创建 200 个提示
+for (let i = 0; i < 200; i++) {
+  setTimeout(createTip, i * 10);
+}
+
+// 2 秒后逐个消失并显示最终祝福
+setTimeout(() => {
+  allTips.forEach((tip, i) => {
+    setTimeout(() => {
+      tip.style.opacity = '0';
+      setTimeout(() => tip.remove(), 300);
+    }, i * 10);
+  });
+  setTimeout(() => {
+    document.querySelector('.final').style.display = 'block';
+  }, allTips.length * 10 + 1000);
+}, 2000);
+
+/* ============ 雪花特效逻辑 ============ */
+function createSnowflake() {
+  const snow = document.createElement('div');
+  snow.className = 'snowflake';
+  snow.textContent = '❄';
+  snow.style.left = Math.random() * 100 + 'vw';
+  snow.style.fontSize = 10 + Math.random() * 14 + 'px';
+  snow.style.animationDuration = 4 + Math.random() * 6 + 's';
+  snow.style.opacity = 0.6 + Math.random() * 0.4;
+  document.body.appendChild(snow);
+
+  // 一段时间后移除
+  setTimeout(() => snow.remove(), 10000);
+}
+
+// 每 200ms 生成一片雪花
+setInterval(createSnowflake, 200);
+</script>
+
+</body>
+</html>
